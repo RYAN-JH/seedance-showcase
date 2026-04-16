@@ -6,7 +6,7 @@
     <title>Seedance 2.0 — Skatepark Documentary Style</title>
     <meta property="og:title" content="Seedance 2.0 — Skatepark Documentary">
     <meta property="og:description" content="AI로 15초 스케이트보딩 다큐를 만드는 프롬프트">
-    <meta property="og:image" content="https://cdn.discordapp.com/attachments/1493957011975438538/1494210750233972846/hf_20260416_050526_c1fdd782-489c-4b3f-aaf4-8dcfa3cb1fd9.png">
+    <meta property="og:image" content="images/skatepark_hero.png">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -239,7 +239,20 @@
         </header>
 
         <div class="hero-image">
-            <img src="https://cdn.discordapp.com/attachments/1493957011975438538/1494210750233972846/hf_20260416_050526_c1fdd782-489c-4b3f-aaf4-8dcfa3cb1fd9.png" alt="Skatepark Reference">
+            <img src="images/skatepark_hero.png" alt="Skatepark Reference">
+        </div>
+
+        <!-- 왜 영어 프롬프트인가? -->
+        <div class="section" style="background: rgba(245, 166, 35, 0.1); border: 1px solid rgba(245, 166, 35, 0.3);">
+            <h2 class="section-title">🌐 왜 영어로 프롬프트를 작성할까?</h2>
+            <div style="color: #ccc; line-height: 1.8;">
+                <p style="margin-bottom: 15px;">AI 이미지/영상 생성 모델(Seedance, Midjourney, DALL-E 등)은 <strong style="color: #f5a623;">영어 데이터로 학습</strong>되었기 때문에 영어 프롬프트가 훨씬 정확한 결과를 만들어냅니다.</p>
+                <ul style="margin-left: 20px; color: #999;">
+                    <li><strong>어휘 정확도</strong>: "brutalist"(브루탈리즘 건축) 같은 스타일 용어가 영어로 더 잘 인식됨</li>
+                    <li><strong>카메라 용어</strong>: "fisheye", "POV", "dolly zoom" 등 촬영 기법이 영어로 학습됨</li>
+                    <li><strong>일관성</strong>: 영어로 작성하면 모델이 의도를 더 정확히 이해</li>
+                </ul>
+            </div>
         </div>
 
         <!-- 스타일 가이드 -->
@@ -249,26 +262,32 @@
                 <div class="style-item">
                     <div class="style-label">캐릭터</div>
                     <div class="style-value">black t-shirt + baggy jeans</div>
+                    <div class="style-label" style="margin-top: 5px; color: #666;">검은 티셔츠 + 통 넓은 청바지</div>
                 </div>
                 <div class="style-item">
                     <div class="style-label">장소</div>
                     <div class="style-value">brutalist concrete skatepark</div>
+                    <div class="style-label" style="margin-top: 5px; color: #666;">브루탈리즘 콘크리트 스케이트파크</div>
                 </div>
                 <div class="style-item">
                     <div class="style-label">조명</div>
                     <div class="style-value">harsh midday shadows</div>
+                    <div class="style-label" style="margin-top: 5px; color: #666;">강렬한 한낮의 그림자</div>
                 </div>
                 <div class="style-item">
                     <div class="style-label">컬러</div>
                     <div class="style-value">warm golden tones</div>
+                    <div class="style-label" style="margin-top: 5px; color: #666;">따뜻한 골든 톤</div>
                 </div>
                 <div class="style-item">
                     <div class="style-label">카메라 A</div>
                     <div class="style-value">fisheye ground-level POV</div>
+                    <div class="style-label" style="margin-top: 5px; color: #666;">어안렌즈 지면 시점</div>
                 </div>
                 <div class="style-item">
                     <div class="style-label">카메라 B</div>
                     <div class="style-value">wider angle shots</div>
+                    <div class="style-label" style="margin-top: 5px; color: #666;">넓은 화각 숏</div>
                 </div>
             </div>
         </div>
