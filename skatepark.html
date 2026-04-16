@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seedance 2.0 — Skatepark Documentary Style</title>
+    <meta property="og:title" content="Seedance 2.0 — Skatepark Documentary">
+    <meta property="og:description" content="AI로 15초 스케이트보딩 다큐를 만드는 프롬프트">
+    <meta property="og:image" content="https://cdn.discordapp.com/attachments/1493957011975438538/1494210750233972846/hf_20260416_050526_c1fdd782-489c-4b3f-aaf4-8dcfa3cb1fd9.png">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #e4e4e4;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        .container { max-width: 900px; margin: 0 auto; }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding: 40px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        h1 {
+            font-size: 2.2rem;
+            background: linear-gradient(90deg, #f5a623, #f7dc6f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        .subtitle { color: #888; font-size: 1rem; margin-bottom: 20px; }
+        .tag {
+            display: inline-block;
+            background: rgba(245, 166, 35, 0.2);
+            border: 1px solid rgba(245, 166, 35, 0.4);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: #f5a623;
+            margin: 5px;
+        }
+
+        .hero-image {
+            width: 100%;
+            max-width: 600px;
+            margin: 30px auto;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+        .hero-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .section {
+            background: rgba(255,255,255,0.03);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .section-title {
+            font-size: 1.3rem;
+            color: #f5a623;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .style-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        .style-item {
+            background: rgba(245, 166, 35, 0.1);
+            border: 1px solid rgba(245, 166, 35, 0.2);
+            padding: 15px;
+            border-radius: 12px;
+        }
+        .style-label {
+            font-size: 0.8rem;
+            color: #888;
+            margin-bottom: 5px;
+        }
+        .style-value {
+            font-size: 1rem;
+            color: #f7dc6f;
+        }
+
+        .prompt-section {
+            margin-top: 30px;
+        }
+        .prompt-box {
+            background: rgba(0,0,0,0.4);
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        .prompt-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background: rgba(245, 166, 35, 0.2);
+        }
+        .prompt-label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #f5a623;
+        }
+        .copy-btn {
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+        }
+        .copy-btn:hover { background: rgba(245, 166, 35, 0.5); }
+        .copy-btn.copied { background: #4ade80; }
+        .prompt-text {
+            padding: 20px;
+            font-family: 'SF Mono', Monaco, Consolas, monospace;
+            font-size: 0.9rem;
+            line-height: 1.8;
+            color: #b8b8b8;
+            white-space: pre-wrap;
+        }
+
+        .timeline {
+            margin-top: 20px;
+        }
+        .timeline-item {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 12px;
+            border-left: 3px solid #f5a623;
+        }
+        .timeline-time {
+            min-width: 70px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            color: #f5a623;
+            font-weight: bold;
+        }
+        .timeline-title {
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 5px;
+        }
+        .timeline-desc {
+            font-size: 0.9rem;
+            color: #999;
+            line-height: 1.5;
+        }
+        .timeline-camera {
+            font-size: 0.8rem;
+            color: #f7dc6f;
+            margin-top: 5px;
+        }
+
+        .tips {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .tip {
+            background: rgba(245, 166, 35, 0.1);
+            border: 1px solid rgba(245, 166, 35, 0.3);
+            padding: 20px;
+            border-radius: 12px;
+        }
+        .tip-icon {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+        .tip-title {
+            font-weight: 600;
+            color: #f5a623;
+            margin-bottom: 8px;
+        }
+        .tip-text {
+            font-size: 0.9rem;
+            color: #999;
+            line-height: 1.5;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 30px;
+            color: #666;
+        }
+        footer a {
+            color: #f5a623;
+            text-decoration: none;
+        }
+        .credit {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(245, 166, 35, 0.1);
+            border-radius: 10px;
+            display: inline-block;
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 1.8rem; }
+            .timeline-item { flex-direction: column; gap: 10px; }
+            .timeline-time { min-width: auto; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🛹 Skatepark Documentary</h1>
+            <p class="subtitle">Seedance 2.0으로 만드는 15초 스케이트 다큐</p>
+            <div>
+                <span class="tag">Fisheye POV</span>
+                <span class="tag">Documentary Style</span>
+                <span class="tag">Golden Hour</span>
+            </div>
+        </header>
+
+        <div class="hero-image">
+            <img src="https://cdn.discordapp.com/attachments/1493957011975438538/1494210750233972846/hf_20260416_050526_c1fdd782-489c-4b3f-aaf4-8dcfa3cb1fd9.png" alt="Skatepark Reference">
+        </div>
+
+        <!-- 스타일 가이드 -->
+        <div class="section">
+            <h2 class="section-title">🎨 스타일 가이드</h2>
+            <div class="style-grid">
+                <div class="style-item">
+                    <div class="style-label">캐릭터</div>
+                    <div class="style-value">black t-shirt + baggy jeans</div>
+                </div>
+                <div class="style-item">
+                    <div class="style-label">장소</div>
+                    <div class="style-value">brutalist concrete skatepark</div>
+                </div>
+                <div class="style-item">
+                    <div class="style-label">조명</div>
+                    <div class="style-value">harsh midday shadows</div>
+                </div>
+                <div class="style-item">
+                    <div class="style-label">컬러</div>
+                    <div class="style-value">warm golden tones</div>
+                </div>
+                <div class="style-item">
+                    <div class="style-label">카메라 A</div>
+                    <div class="style-value">fisheye ground-level POV</div>
+                </div>
+                <div class="style-item">
+                    <div class="style-label">카메라 B</div>
+                    <div class="style-value">wider angle shots</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 메인 프롬프트 -->
+        <div class="section">
+            <h2 class="section-title">📝 메인 프롬프트</h2>
+            <p style="color: #888; margin-bottom: 20px;">전체 스타일을 정의하는 헤더 프롬프트</p>
+
+            <div class="prompt-box">
+                <div class="prompt-header">
+                    <span class="prompt-label">STYLE HEADER</span>
+                    <button class="copy-btn" onclick="copyText(this)">복사</button>
+                </div>
+                <div class="prompt-text">A young skateboarder in a black t-shirt and baggy jeans at a brutalist concrete skatepark. Harsh midday shadows, raw street-skating documentary style, warm golden tones.</div>
+            </div>
+        </div>
+
+        <!-- 타임라인 -->
+        <div class="section">
+            <h2 class="section-title">⏱️ 8씬 타임라인</h2>
+            <p style="color: #888; margin-bottom: 20px;">카메라 앵글이 홀수/짝수로 교차됨 (Wide ↔ Fisheye)</p>
+
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-time">[0s-2s]</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">APPROACH</div>
+                        <div class="timeline-desc">Wide shot. Skater pushes off across sun-bleached concrete. Long shadow stretches behind him. Brutalist walls frame the scene.</div>
+                        <div class="timeline-camera">📹 Camera tracks from side</div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-time">[2s-4s]</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">DROP-IN</div>
+                        <div class="timeline-desc">Board nose tips over the bowl edge. Wheels hit the curve. Camera follows the deck as he drops.</div>
+                        <div class="timeline-camera">📹 Fisheye lens, ground-level POV</div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-time">[4s-6s]</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">KICKFLIP</div>
+                        <div class="timeline-desc">Board spins beneath his feet mid-air. Black t-shirt silhouetted against bright sky. Lands clean on golden concrete.</div>
+                        <div class="timeline-camera">📹 Wider angle from below</div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-time">[6s-8s]</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">GRIND</div>
+                        <div class="timeline-desc">Metal trucks slide along concrete ledge. Sparks catch sunlight. Raw grinding sound implied.</div>
+                        <div class="timeline-camera">📹 Fisheye POV locked on the board</div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-time">[8s-10s]</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">MANUAL</div>
+                        <div class="timeline-desc">Back wheels only, front lifted. Arms out for balance. Baggy jeans ripple in motion. Harsh shadow mirrors his form.</div>
+                        <div class="timeline-camera">📹 Side tracking shot</div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-time">[10s-12s]</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">OLLIE OVER GAP</div>
+                        <div class="timeline-desc">Skater launches over concrete gap. Board grabbed mid-air. Sun flares behind him.</div>
+                        <div class="timeline-camera">📹 Low angle looking up</div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-time">[12s-14s]</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">BAIL</div>
+                        <div class="timeline-desc">Board slips. Skater tumbles, rolls on concrete. Gets up immediately, brushes off. Laughs it off.</div>
+                        <div class="timeline-camera">📹 Fisheye close-up</div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-time">[14s-15s]</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">WALK AWAY</div>
+                        <div class="timeline-desc">Picks up board, walks toward brutalist wall. Long afternoon shadow. Back to camera. Documentary ending.</div>
+                        <div class="timeline-camera">📹 Wide shot</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 전체 프롬프트 -->
+        <div class="section prompt-section">
+            <h2 class="section-title">📋 전체 프롬프트 (복사용)</h2>
+
+            <div class="prompt-box">
+                <div class="prompt-header">
+                    <span class="prompt-label">FULL PROMPT</span>
+                    <button class="copy-btn" onclick="copyText(this)">복사</button>
+                </div>
+                <div class="prompt-text">A young skateboarder in a black t-shirt and baggy jeans at a brutalist concrete skatepark. Harsh midday shadows, raw street-skating documentary style, warm golden tones.
+
+[0s-2s] APPROACH — Wide shot. Skater pushes off across sun-bleached concrete. Long shadow stretches behind him. Brutalist walls frame the scene. Camera tracks from side.
+
+[2s-4s] DROP-IN — Fisheye lens, ground-level POV. Board nose tips over the bowl edge. Wheels hit the curve. Camera follows the deck as he drops.
+
+[4s-6s] KICKFLIP — Wider angle from below. Board spins beneath his feet mid-air. Black t-shirt silhouetted against bright sky. Lands clean on golden concrete.
+
+[6s-8s] GRIND — Fisheye POV locked on the board. Metal trucks slide along concrete ledge. Sparks catch sunlight. Raw grinding sound implied.
+
+[8s-10s] MANUAL — Side tracking shot. Back wheels only, front lifted. Arms out for balance. Baggy jeans ripple in motion. Harsh shadow mirrors his form.
+
+[10s-12s] OLLIE OVER GAP — Low angle looking up. Skater launches over concrete gap. Board grabbed mid-air. Sun flares behind him.
+
+[12s-14s] BAIL — Fisheye close-up. Board slips. Skater tumbles, rolls on concrete. Gets up immediately, brushes off. Laughs it off.
+
+[14s-15s] WALK AWAY — Wide shot. Picks up board, walks toward brutalist wall. Long afternoon shadow. Back to camera. Documentary ending.
+
+Harsh midday sun, warm golden color grade, 16mm film grain, raw street-skating aesthetic.</div>
+            </div>
+        </div>
+
+        <!-- 팁 -->
+        <div class="section">
+            <h2 class="section-title">💡 프롬프트 작성 팁</h2>
+            <div class="tips">
+                <div class="tip">
+                    <div class="tip-icon">🎥</div>
+                    <div class="tip-title">카메라 앵글 교차</div>
+                    <div class="tip-text">홀수 씬은 Wide/Side, 짝수 씬은 Fisheye POV로 번갈아 배치해서 다이나믹한 편집감 연출</div>
+                </div>
+                <div class="tip">
+                    <div class="tip-icon">👕</div>
+                    <div class="tip-title">캐릭터 묘사 반복</div>
+                    <div class="tip-text">"black t-shirt and baggy jeans"를 매번 언급해서 일관성 유지</div>
+                </div>
+                <div class="tip">
+                    <div class="tip-icon">🌅</div>
+                    <div class="tip-title">조명 앵커</div>
+                    <div class="tip-text">"harsh shadow", "golden", "midday sun"을 반복해서 색감 통일</div>
+                </div>
+                <div class="tip">
+                    <div class="tip-icon">🏗️</div>
+                    <div class="tip-title">장소 키워드</div>
+                    <div class="tip-text">"brutalist concrete"를 반복해서 공간의 일관성 확보</div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <div class="credit">
+                Made with <a href="https://higgsfield.ai" target="_blank">Seedance 2.0</a> by Higgsfield
+            </div>
+            <p style="margin-top: 20px;">
+                <a href="https://instagram.com/moment.ryan" target="_blank">@moment.ryan</a>
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        function copyText(btn) {
+            const promptText = btn.closest('.prompt-box').querySelector('.prompt-text').textContent;
+            navigator.clipboard.writeText(promptText).then(() => {
+                btn.textContent = '복사됨!';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.textContent = '복사';
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>
